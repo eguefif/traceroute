@@ -16,7 +16,6 @@
 #define true 1
 #define false 0
 #define EXIT_FAILURE 1
-#define TTL 64
 #define PING_SIZE 64
 
 typedef int boolean;
@@ -39,6 +38,9 @@ void resolve_dns(Params *params);
 void run_traceroute(Params params);
 char *reverse_resolve_dns(struct sockaddr *addr, char *ip);
 
-boolean check_response(char *buffer, int seq);
+boolean check_response(char *buffer);
 uint16_t calculate_checksum(void *packet);
+
+unsigned long get_time();
+int to_ms(int t);
 #endif

@@ -1,12 +1,12 @@
 #include "traceroute.h"
 
 boolean check_checksum(struct icmphdr *);
-boolean check_header(struct icmphdr *, int);
+boolean check_header(struct icmphdr *);
 
-boolean check_response(char *buffer, int seq) {
+boolean check_response(char *buffer) {
     struct iphdr *ip = (struct iphdr *)buffer;
     struct icmphdr *icmp = (struct icmphdr *)(buffer + ip->ihl * 4);
-    if (!check_header(icmp, seq)) {
+    if (!check_header(icmp)) {
         return false;
     }
     if (!check_checksum(icmp)) {
@@ -26,10 +26,10 @@ boolean check_checksum(struct icmphdr *header) {
     return checksum == expected_checksum;
 }
 
-boolean check_header(struct icmphdr *header, int seq) {
+boolean check_header(struct icmphdr *header) {
     int pid = getpid();
-    return (header->type == 0 && header->code == 0 &&
-            header->un.echo.id == pid && header->un.echo.sequence == seq);
+    return (header->type == 3 && header->code == 3 &&
+            header->un.echo.id == pid);
 }
 
 uint16_t calculate_checksum(void *packet) {
